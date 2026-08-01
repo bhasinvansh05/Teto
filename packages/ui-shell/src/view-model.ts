@@ -13,11 +13,13 @@ import {
   type ModePresentation,
   type ShellState,
 } from "./mode.js";
+import type { AppTheme } from "./theme.js";
 
 /** Presentation-ready shell data. Pipelines stay mocked until CP4. */
 export interface ShellViewModel {
   state: ShellState;
   presentation: ModePresentation;
+  theme: AppTheme;
   english?: EnglishSentence;
   gloss?: GlossSequence;
   animation?: AnimationCommand;
@@ -30,6 +32,7 @@ export interface ShellViewModel {
 export interface CreateShellViewModelOptions {
   mode?: AppMode;
   state?: ShellState;
+  theme?: AppTheme;
   english?: EnglishSentence;
   gloss?: GlossSequence;
   animation?: AnimationCommand;
@@ -49,6 +52,7 @@ export function createShellViewModel(
   return {
     state,
     presentation: getModePresentation(state.mode),
+    theme: options.theme ?? "light",
     english: options.english ?? (useMocks ? mocks.englishSentence : undefined),
     gloss: options.gloss ?? (useMocks ? mocks.glossSequence : undefined),
     animation:

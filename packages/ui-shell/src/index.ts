@@ -1,7 +1,7 @@
 /**
  * @teto/ui-shell — Agent 5 (feature/ui-shell)
  *
- * Owns: mode toggle, layout, Apple HIG / Liquid Glass styling, responsive shell.
+ * Owns: mode toggle, theme toggle, layout, Apple HIG styling, responsive shell.
  * Builds against mocked contract data until integration checkpoint CP4.
  */
 
@@ -16,6 +16,15 @@ export {
   toggleMode,
 } from "./mode.js";
 
+export type { AppTheme } from "./theme.js";
+export {
+  isDarkTheme,
+  isLightTheme,
+  resolvePreferredTheme,
+  themeLabel,
+  toggleTheme,
+} from "./theme.js";
+
 export type { CreateShellViewModelOptions, ShellViewModel } from "./view-model.js";
 export {
   animationDurationMs,
@@ -24,13 +33,18 @@ export {
   signLabels,
 } from "./view-model.js";
 
-export { renderMockedShell, renderShellMarkup } from "./shell.js";
+export {
+  renderMockedShell,
+  renderShellMarkup,
+  THEME_BOOTSTRAP_SCRIPT,
+} from "./shell.js";
 
 export {
   renderAvatarStage,
   renderCameraStage,
   renderGlossTicker,
   renderModeToggle,
+  renderThemeToggle,
   renderTranscriptPanel,
 } from "./components/index.js";
 
@@ -39,5 +53,6 @@ export type {
   CameraStageProps,
   GlossTickerProps,
   ModeToggleProps,
+  ThemeToggleProps,
   TranscriptPanelProps,
 } from "./components/index.js";
