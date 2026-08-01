@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://teto.dev/schemas/landmark-frame.schema.json",
+  "title": "LandmarkFrame",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "timestampMs",
+    "frameId",
+    "imageSize",
+    "hands",
+    "pose"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "1.0.0" },
+    "timestampMs": { "type": "number", "minimum": 0 },
+    "frameId": { "type": "string", "minLength": 1 },
+    "imageSize": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height"],
+      "properties": {
+        "width": { "type": "number", "exclusiveMinimum": 0 },
+        "height": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "hands": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["left", "right"],
+      "properties": {
+        "left": { "$ref": "#/$defs/handObservation" },
+        "right": { "$ref": "#/$defs/handObservation" }
+      }
+    },
+    "pose": { "$ref": "#/$defs/poseObservation" }
+  },
+  "$defs": {
+    "landmark": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "z", "visibility"],
+      "properties": {
+        "x": { "type": "number", "minimum": 0, "maximum": 1 },
+        "y": { "type": "number", "minimum": 0, "maximum": 1 },
+        "z": { "type": "number" },
+        "visibility": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "handObservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["present", "landmarks"],
+      "properties": {
+        "present": { "type": "boolean" },
+        "landmarks": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/landmark" },
+          "maxItems": 21
+        }
+      }
+    },
+    "poseObservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["present", "landmarks"],
+      "properties": {
+        "present": { "type": "boolean" },
+        "landmarks": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/landmark" },
+          "maxItems": 33
+        }
+      }
+    }
+  }
+}

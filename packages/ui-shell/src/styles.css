@@ -1,0 +1,27 @@
+/* Orchestrator stub tokens — Agent 5 owns the visual system on feature/ui-shell */
+:root {
+  --teto-bg-0: #0b1220;
+  --teto-bg-1: #152238;
+  --teto-glass: rgba(255, 255, 255, 0.08);
+  --teto-text: #f4f7fb;
+  --teto-accent: #5ac8fa;
+  --teto-font-display: "SF Pro Display", "Segoe UI", sans-serif;
+  --teto-font-text: "SF Pro Text", "Segoe UI", sans-serif;
+}
+
+.teto-shell {
+  min-height: 100vh;
+  color: var(--teto-text);
+  font-family: var(--teto-font-text);
+  background:
+    radial-gradient(1200px 600px at 20% -10%, #2a4a7a 0%, transparent 55%),
+    linear-gradient(160deg, var(--teto-bg-0), var(--teto-bg-1));
+}
+
+.teto-brand h1 {
+  font-family: var(--teto-font-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  margin: 0;
+}

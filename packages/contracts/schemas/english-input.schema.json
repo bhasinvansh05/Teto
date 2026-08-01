@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://teto.dev/schemas/english-input.schema.json",
+  "title": "EnglishInput",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "inputId", "text", "locale", "origin"],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "1.0.0" },
+    "inputId": { "type": "string", "minLength": 1 },
+    "text": { "type": "string", "minLength": 1 },
+    "locale": { "type": "string", "minLength": 2 },
+    "origin": {
+      "type": "string",
+      "enum": ["typed", "speech", "system"]
+    }
+  }
+}

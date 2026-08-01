@@ -1,0 +1,26 @@
+{
+  "name": "@teto/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node --import tsx --test src/**/*.test.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "demo": "node --import tsx src/demo.ts"
+  },
+  "dependencies": {
+    "@teto/avatar-renderer": "0.1.0",
+    "@teto/contracts": "1.0.0",
+    "@teto/gloss-parser": "0.1.0",
+    "@teto/sign-classifier": "0.1.0",
+    "@teto/ui-shell": "0.1.0",
+    "@teto/vision-capture": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+}

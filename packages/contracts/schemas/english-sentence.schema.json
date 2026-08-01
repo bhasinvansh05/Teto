@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://teto.dev/schemas/english-sentence.schema.json",
+  "title": "EnglishSentence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "sentenceId", "text", "confidence"],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "1.0.0" },
+    "sentenceId": { "type": "string", "minLength": 1 },
+    "text": { "type": "string", "minLength": 1 },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "sourceSequenceId": { "type": "string" }
+  }
+}

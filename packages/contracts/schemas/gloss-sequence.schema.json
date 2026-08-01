@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://teto.dev/schemas/gloss-sequence.schema.json",
+  "title": "GlossSequence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "glossId",
+    "direction",
+    "sourceText",
+    "tokens"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "1.0.0" },
+    "glossId": { "type": "string", "minLength": 1 },
+    "direction": {
+      "type": "string",
+      "enum": ["en_to_asl", "asl_to_en"]
+    },
+    "sourceText": { "type": "string" },
+    "tokens": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/glossToken" }
+    }
+  },
+  "$defs": {
+    "nmm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["brow", "head", "eyeGaze"],
+      "properties": {
+        "brow": {
+          "type": "string",
+          "enum": ["neutral", "raised", "furrowed"]
+        },
+        "head": {
+          "type": "string",
+          "enum": [
+            "neutral",
+            "nod",
+            "shake",
+            "tilt-left",
+            "tilt-right",
+            "tilt-forward"
+          ]
+        },
+        "eyeGaze": {
+          "type": "string",
+          "enum": ["forward", "left", "right", "up", "down"]
+        }
+      }
+    },
+    "glossToken": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "gloss",
+        "role",
+        "fingerspell",
+        "durationMs",
+        "emphasis"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "gloss": { "type": "string", "minLength": 1 },
+        "role": {
+          "type": "string",
+          "enum": ["sign", "fingerspell", "classifier", "pause", "hold"]
+        },
+        "fingerspell": { "type": "boolean" },
+        "durationMs": { "type": "number", "minimum": 0 },
+        "emphasis": {
+          "type": "string",
+          "enum": ["reduced", "normal", "stressed"]
+        },
+        "nmm": { "$ref": "#/$defs/nmm" }
+      }
+    }
+  }
+}
