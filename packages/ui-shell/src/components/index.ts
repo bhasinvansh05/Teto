@@ -1,6 +1,9 @@
 export { renderModeToggle } from "./mode-toggle.js";
 export type { ModeToggleProps } from "./mode-toggle.js";
 
+export { renderThemeToggle } from "./theme-toggle.js";
+export type { ThemeToggleProps } from "./theme-toggle.js";
+
 export { renderTranscriptPanel } from "./transcript-panel.js";
 export type { TranscriptPanelProps } from "./transcript-panel.js";
 

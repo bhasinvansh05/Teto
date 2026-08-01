@@ -1,58 +1,124 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Teto — CP5 Integrated Pipeline Demo</title>
   <style>
-    /* Reset for offline demo page */
-    html, body {
-      margin: 0;
-      padding: 0;
-      min-height: 100%;
-      background: #071018;
-    }
-/* Teto UI shell — Liquid Glass / Apple HIG visual system (Agent 5) */
+    html, body { margin: 0; min-height: 100%; background: transparent; }
+/* Teto UI shell — quiet Apple HIG materials (clarity, deference, depth) */
 
-:root {
-  /* Atmosphere — deep slate ocean, not purple-on-white */
-  --teto-bg-0: #071018;
-  --teto-bg-1: #0f2433;
-  --teto-bg-2: #16374a;
-  --teto-mist: rgba(120, 200, 220, 0.18);
-  --teto-mist-warm: rgba(90, 160, 140, 0.12);
+:root,
+.teto-shell[data-theme="light"] {
+  /* Soft cool daylight — not flat white, not cream, not neon dark */
+  --teto-bg-0: #f5f5f7;
+  --teto-bg-1: #eef1f6;
+  --teto-bg-2: #e6ebf2;
+  --teto-surface: rgba(255, 255, 255, 0.72);
+  --teto-surface-strong: rgba(255, 255, 255, 0.88);
+  --teto-ink: #1d1d1f;
+  --teto-ink-secondary: rgba(29, 29, 31, 0.64);
+  --teto-ink-tertiary: rgba(29, 29, 31, 0.42);
+  --teto-separator: rgba(0, 0, 0, 0.08);
+  --teto-separator-strong: rgba(0, 0, 0, 0.12);
 
-  /* Glass */
-  --teto-glass: rgba(255, 255, 255, 0.07);
-  --teto-glass-strong: rgba(255, 255, 255, 0.12);
-  --teto-glass-border: rgba(255, 255, 255, 0.18);
-  --teto-glass-edge: rgba(255, 255, 255, 0.35);
-  --teto-blur: 28px;
+  /* System blue, used sparingly */
+  --teto-accent: #0071e3;
+  --teto-accent-press: #0077ed;
+  --teto-accent-soft: rgba(0, 113, 227, 0.1);
+  --teto-accent-ink: #0071e3;
+  --teto-focus-ring: rgba(0, 113, 227, 0.35);
 
-  /* Text & accent */
-  --teto-text: #f2f7fa;
-  --teto-text-muted: rgba(242, 247, 250, 0.68);
-  --teto-accent: #4ec4c8;
-  --teto-accent-soft: #7ed4c8;
-  --teto-accent-deep: #2a8f96;
-  --teto-danger-soft: #e8a090;
+  /* Ultra-light glass */
+  --teto-glass: rgba(255, 255, 255, 0.55);
+  --teto-glass-strong: rgba(255, 255, 255, 0.78);
+  --teto-glass-border: rgba(255, 255, 255, 0.65);
+  --teto-blur: 40px;
 
-  /* Type — SF Pro with expressive fallbacks (not Inter/Roboto/Arial/system-only) */
-  --teto-font-display: "SF Pro Display", "Avenir Next", "Nunito Sans", "Segoe UI", sans-serif;
-  --teto-font-text: "SF Pro Text", "Avenir Next", "Nunito Sans", "Segoe UI", sans-serif;
-  --teto-font-mono: "SF Mono", "Avenir Next Condensed", "Nunito Sans", monospace;
+  /* Theme-aware materials */
+  --teto-mist-1: rgba(180, 205, 235, 0.45);
+  --teto-mist-2: rgba(210, 220, 235, 0.5);
+  --teto-mist-3: rgba(200, 210, 225, 0.35);
+  --teto-segment-track: rgba(0, 0, 0, 0.04);
+  --teto-segment-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 0 0 0.5px rgba(0, 0, 0, 0.04);
+  --teto-plane-wash: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(245, 247, 250, 0.35));
+  --teto-plane-base: linear-gradient(145deg, #dfe6ef 0%, #cfd8e4 48%, #b8c4d4 100%);
+  --teto-plane-shadow: 0 1px 0 rgba(255, 255, 255, 0.65) inset, 0 20px 50px rgba(15, 23, 42, 0.08);
+  --teto-specular: linear-gradient(180deg, rgba(255, 255, 255, 0.28) 0%, transparent 42%, rgba(15, 23, 42, 0.04) 100%);
+  --teto-caption-fade: linear-gradient(transparent, rgba(245, 247, 250, 0.55) 35%, rgba(245, 247, 250, 0.82));
+  --teto-frame-fill: radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.35), transparent 58%),
+    linear-gradient(165deg, rgba(255, 255, 255, 0.22), rgba(180, 195, 215, 0.18));
+  --teto-frame-edge: rgba(255, 255, 255, 0.35);
+  --teto-corner: rgba(29, 29, 31, 0.22);
+  --teto-avatar-fill: radial-gradient(circle at 50% 16%, rgba(255, 255, 255, 0.7) 0 11%, transparent 12%),
+    linear-gradient(180deg, rgba(120, 140, 165, 0.35), rgba(120, 140, 165, 0.08) 60%, transparent);
+  --teto-glass-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 12px 40px rgba(15, 23, 42, 0.06);
+  --teto-glass-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, transparent 40%);
+  --teto-token-bg: rgba(255, 255, 255, 0.65);
+  --teto-token-reduced-bg: rgba(0, 0, 0, 0.03);
+  --teto-cta-ink: #fff;
+
+  /* Type — SF Pro with quiet expressive fallbacks */
+  --teto-font-display: "SF Pro Display", "Avenir Next", "Nunito Sans", sans-serif;
+  --teto-font-text: "SF Pro Text", "Avenir Next", "Nunito Sans", sans-serif;
+  --teto-font-mono: "SF Mono", "Avenir Next Condensed", ui-monospace, monospace;
 
   /* Layout */
   --teto-space-1: 0.5rem;
   --teto-space-2: 1rem;
   --teto-space-3: 1.5rem;
   --teto-space-4: 2.5rem;
-  --teto-space-5: 4rem;
-  --teto-radius: 1.25rem;
-  --teto-radius-sm: 0.75rem;
-  --teto-max: 72rem;
-  --teto-bp-md: 768px;
-  --teto-bp-lg: 1100px;
+  --teto-space-5: 4.5rem;
+  --teto-radius: 1.375rem;
+  --teto-radius-sm: 0.875rem;
+  --teto-max: 68rem;
+
+  color-scheme: light;
+}
+
+.teto-shell[data-theme="dark"] {
+  --teto-bg-0: #000000;
+  --teto-bg-1: #0b0b0f;
+  --teto-bg-2: #14141a;
+  --teto-surface: rgba(44, 44, 46, 0.72);
+  --teto-surface-strong: rgba(58, 58, 60, 0.92);
+  --teto-ink: #f5f5f7;
+  --teto-ink-secondary: rgba(245, 245, 247, 0.68);
+  --teto-ink-tertiary: rgba(245, 245, 247, 0.42);
+  --teto-separator: rgba(255, 255, 255, 0.1);
+  --teto-separator-strong: rgba(255, 255, 255, 0.16);
+
+  --teto-accent: #0a84ff;
+  --teto-accent-press: #409cff;
+  --teto-accent-soft: rgba(10, 132, 255, 0.18);
+  --teto-accent-ink: #6cb6ff;
+  --teto-focus-ring: rgba(10, 132, 255, 0.45);
+
+  --teto-glass: rgba(28, 28, 30, 0.62);
+  --teto-glass-strong: rgba(44, 44, 46, 0.88);
+  --teto-glass-border: rgba(255, 255, 255, 0.1);
+
+  --teto-mist-1: rgba(70, 100, 150, 0.22);
+  --teto-mist-2: rgba(40, 60, 100, 0.2);
+  --teto-mist-3: rgba(30, 40, 70, 0.28);
+  --teto-segment-track: rgba(255, 255, 255, 0.08);
+  --teto-segment-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), inset 0 0.5px 0 rgba(255, 255, 255, 0.08);
+  --teto-plane-wash: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  --teto-plane-base: linear-gradient(145deg, #1c1c1e 0%, #242428 48%, #2c2c30 100%);
+  --teto-plane-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 24px 60px rgba(0, 0, 0, 0.45);
+  --teto-specular: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 42%, rgba(0, 0, 0, 0.2) 100%);
+  --teto-caption-fade: linear-gradient(transparent, rgba(20, 20, 24, 0.55) 35%, rgba(12, 12, 16, 0.88));
+  --teto-frame-fill: radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.08), transparent 58%),
+    linear-gradient(165deg, rgba(255, 255, 255, 0.05), rgba(80, 95, 120, 0.12));
+  --teto-frame-edge: rgba(255, 255, 255, 0.12);
+  --teto-corner: rgba(245, 245, 247, 0.28);
+  --teto-avatar-fill: radial-gradient(circle at 50% 16%, rgba(255, 255, 255, 0.35) 0 11%, transparent 12%),
+    linear-gradient(180deg, rgba(140, 160, 190, 0.28), rgba(80, 95, 120, 0.08) 60%, transparent);
+  --teto-glass-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 16px 48px rgba(0, 0, 0, 0.35);
+  --teto-glass-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 40%);
+  --teto-token-bg: rgba(255, 255, 255, 0.08);
+  --teto-token-reduced-bg: rgba(255, 255, 255, 0.04);
+  --teto-cta-ink: #fff;
 
   color-scheme: dark;
 }
@@ -82,12 +148,15 @@
   isolation: isolate;
   min-height: 100vh;
   min-height: 100dvh;
-  color: var(--teto-text);
+  color: var(--teto-ink);
   font-family: var(--teto-font-text);
-  font-size: 1rem;
-  line-height: 1.5;
+  font-size: 1.0625rem;
+  line-height: 1.47;
+  letter-spacing: -0.01em;
   overflow-x: hidden;
   background: var(--teto-bg-0);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 .teto-shell__atmosphere {
@@ -96,197 +165,179 @@
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 90% 55% at 15% -5%, var(--teto-mist) 0%, transparent 55%),
-    radial-gradient(ellipse 70% 50% at 90% 10%, var(--teto-mist-warm) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(46, 120, 140, 0.22) 0%, transparent 60%),
-    linear-gradient(165deg, var(--teto-bg-0) 0%, var(--teto-bg-1) 48%, var(--teto-bg-2) 100%);
-}
-
-.teto-shell__atmosphere::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 20%, transparent 75%);
-  opacity: 0.5;
+    radial-gradient(ellipse 80% 50% at 12% 0%, var(--teto-mist-1) 0%, transparent 58%),
+    radial-gradient(ellipse 60% 45% at 88% 8%, var(--teto-mist-2) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 40% at 50% 100%, var(--teto-mist-3) 0%, transparent 60%),
+    linear-gradient(180deg, var(--teto-bg-0) 0%, var(--teto-bg-1) 55%, var(--teto-bg-2) 100%);
 }
 
 .teto-shell__content {
   position: relative;
   z-index: 1;
-  width: min(100% - 2rem, var(--teto-max));
+  width: min(100% - 2.5rem, var(--teto-max));
   margin-inline: auto;
   padding-block: var(--teto-space-4) var(--teto-space-5);
   display: grid;
   gap: var(--teto-space-4);
 }
 
-/* ——— Hero: brand + headline + support + CTA ——— */
+.teto-shell__toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 2rem;
+}
+
+/* ——— Hero ——— */
 
 .teto-hero {
   display: grid;
-  gap: var(--teto-space-2);
-  max-width: 38rem;
+  gap: 0.85rem;
+  max-width: 36rem;
   padding-top: var(--teto-space-2);
 }
 
 .teto-brand {
   margin: 0;
   font-family: var(--teto-font-display);
-  font-weight: 700;
-  font-size: clamp(3rem, 10vw, 5.5rem);
-  letter-spacing: -0.045em;
-  line-height: 0.95;
-  background: linear-gradient(
-    125deg,
-    #ffffff 10%,
-    var(--teto-accent-soft) 45%,
-    var(--teto-accent) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 8px 24px rgba(78, 196, 200, 0.25));
+  font-weight: 600;
+  font-size: clamp(3.25rem, 9vw, 5rem);
+  letter-spacing: -0.055em;
+  line-height: 0.96;
+  color: var(--teto-ink);
 }
 
 .teto-hero__headline {
-  margin: 0;
+  margin: 0.15rem 0 0;
   font-family: var(--teto-font-display);
   font-weight: 600;
-  font-size: clamp(1.35rem, 3.2vw, 1.85rem);
-  letter-spacing: -0.02em;
-  line-height: 1.25;
-  color: var(--teto-text);
+  font-size: clamp(1.5rem, 3.4vw, 2rem);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--teto-ink);
 }
 
 .teto-hero__supporting {
   margin: 0;
-  max-width: 32rem;
-  font-size: clamp(0.95rem, 2vw, 1.05rem);
-  color: var(--teto-text-muted);
+  max-width: 28rem;
+  font-size: 1.0625rem;
+  line-height: 1.45;
+  color: var(--teto-ink-secondary);
+  font-weight: 400;
 }
 
 .teto-hero__cta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--teto-space-2);
-  margin-top: var(--teto-space-1);
+  gap: 0.75rem;
+  margin-top: 0.65rem;
 }
 
 .teto-status {
-  margin: 0;
+  margin: 0.15rem 0 0;
   font-size: 0.875rem;
-  color: var(--teto-text-muted);
+  color: var(--teto-ink-tertiary);
 }
 
 .teto-cta-primary {
   appearance: none;
-  border: 1px solid var(--teto-glass-border);
-  border-radius: 999px;
-  padding: 0.7rem 1.35rem;
+  border: 0;
+  border-radius: 980px;
+  padding: 0.72rem 1.4rem;
   font-family: var(--teto-font-text);
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--teto-bg-0);
-  background: linear-gradient(135deg, var(--teto-accent-soft), var(--teto-accent));
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--teto-cta-ink);
+  background: var(--teto-accent);
   cursor: pointer;
-  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
-  box-shadow: 0 10px 28px rgba(46, 143, 150, 0.35);
+  transition: background 160ms ease, transform 160ms ease, opacity 160ms ease;
+  box-shadow: none;
 }
 
 .teto-cta-primary:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.05);
+  background: var(--teto-accent-press);
 }
 
 .teto-cta-primary:active {
-  transform: translateY(0);
+  transform: scale(0.98);
+  opacity: 0.92;
 }
 
 .teto-cta-primary:focus-visible {
-  outline: 2px solid var(--teto-accent);
+  outline: 3px solid var(--teto-focus-ring);
   outline-offset: 3px;
 }
 
-/* ——— Mode toggle ——— */
+/* ——— Mode toggle (iOS-like segmented control) ——— */
 
-.teto-mode-toggle {
+.teto-mode-toggle,
+.teto-theme-toggle {
   position: relative;
   display: inline-grid;
   grid-auto-flow: column;
-  gap: 0.25rem;
-  padding: 0.3rem;
-  border-radius: 999px;
-  border: 1px solid var(--teto-glass-border);
-  background: var(--teto-glass);
-  backdrop-filter: blur(var(--teto-blur));
-  -webkit-backdrop-filter: blur(var(--teto-blur));
+  gap: 0.15rem;
+  padding: 0.2rem;
+  border-radius: 980px;
+  border: 1px solid var(--teto-separator);
+  background: var(--teto-segment-track);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
-.teto-mode-toggle__track {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  border-radius: inherit;
-}
-
+.teto-mode-toggle__track,
 .teto-mode-toggle__glow {
-  position: absolute;
-  inset: -40% -20%;
-  background: linear-gradient(
-    110deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.22) 48%,
-    transparent 62%
-  );
-  animation: teto-glass-highlight 4.5s ease-in-out infinite;
+  display: none;
 }
 
-.teto-mode-toggle__btn {
+.teto-mode-toggle__btn,
+.teto-theme-toggle__btn {
   position: relative;
   z-index: 1;
   appearance: none;
   border: 0;
-  border-radius: 999px;
-  padding: 0.55rem 0.95rem;
+  border-radius: 980px;
+  padding: 0.5rem 0.95rem;
   font-family: var(--teto-font-text);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--teto-text-muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--teto-ink-secondary);
   background: transparent;
   cursor: pointer;
-  transition: color 200ms ease, background 200ms ease, transform 200ms ease;
+  transition: color 180ms ease, background 180ms ease, box-shadow 180ms ease;
 }
 
-.teto-mode-toggle__btn.is-selected {
-  color: var(--teto-text);
-  background: var(--teto-glass-strong);
-  box-shadow: inset 0 1px 0 var(--teto-glass-edge);
+.teto-theme-toggle__btn {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.75rem;
 }
 
-.teto-mode-toggle__btn:focus-visible {
-  outline: 2px solid var(--teto-accent);
+.teto-mode-toggle__btn.is-selected,
+.teto-theme-toggle__btn.is-selected {
+  color: var(--teto-ink);
+  background: var(--teto-surface-strong);
+  box-shadow: var(--teto-segment-shadow);
+}
+
+.teto-mode-toggle__btn:focus-visible,
+.teto-theme-toggle__btn:focus-visible {
+  outline: 3px solid var(--teto-focus-ring);
   outline-offset: 2px;
 }
 
-/* ——— Dominant visual plane (camera / avatar) ——— */
+/* ——— Dominant visual plane ——— */
 
 .teto-visual-plane {
   position: relative;
   width: 100%;
   min-height: clamp(18rem, 48vw, 28rem);
-  border-radius: calc(var(--teto-radius) + 0.25rem);
+  border-radius: calc(var(--teto-radius) + 0.15rem);
   overflow: hidden;
-  border: 1px solid var(--teto-glass-border);
-  background: rgba(8, 20, 28, 0.55);
-  box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 var(--teto-glass-edge);
+  border: 1px solid var(--teto-separator);
+  background: var(--teto-plane-wash), var(--teto-plane-base);
+  box-shadow: var(--teto-plane-shadow);
 }
 
 .teto-stage {
@@ -296,21 +347,17 @@
   align-content: end;
   opacity: 0;
   visibility: hidden;
-  transform: scale(1.02);
   transition:
-    opacity 420ms ease,
-    transform 420ms ease,
-    visibility 0s linear 420ms;
+    opacity 380ms ease,
+    visibility 0s linear 380ms;
   pointer-events: none;
 }
 
 .teto-stage.is-active {
   opacity: 1;
   visibility: visible;
-  transform: scale(1);
   transition:
-    opacity 420ms ease,
-    transform 420ms ease,
+    opacity 380ms ease,
     visibility 0s;
   pointer-events: auto;
   z-index: 1;
@@ -324,14 +371,8 @@
 
 .teto-stage__specular {
   position: absolute;
-  inset: -30% -40%;
-  background: linear-gradient(
-    115deg,
-    transparent 35%,
-    rgba(255, 255, 255, 0.14) 48%,
-    transparent 58%
-  );
-  animation: teto-glass-highlight 5.5s ease-in-out infinite;
+  inset: 0;
+  background: var(--teto-specular);
   pointer-events: none;
 }
 
@@ -339,41 +380,44 @@
   position: relative;
   z-index: 2;
   padding: var(--teto-space-3);
-  background: linear-gradient(transparent, rgba(5, 12, 18, 0.72));
+  background: var(--teto-caption-fade);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .teto-stage__eyebrow {
-  margin: 0 0 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  margin: 0 0 0.2rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--teto-accent-soft);
+  color: var(--teto-ink-tertiary);
 }
 
 .teto-stage__title {
   margin: 0;
   font-family: var(--teto-font-display);
-  font-size: 1.05rem;
-  font-weight: 600;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--teto-ink);
 }
 
-/* Camera stage */
+/* Camera stage — quiet viewfinder */
 
 .teto-camera-stage__frame {
   position: absolute;
-  inset: 12%;
+  inset: 14%;
   border-radius: var(--teto-radius-sm);
-  background:
-    radial-gradient(circle at 50% 40%, rgba(78, 196, 200, 0.12), transparent 55%),
-    linear-gradient(160deg, rgba(20, 45, 58, 0.9), rgba(8, 18, 26, 0.95));
+  background: var(--teto-frame-fill);
+  box-shadow: inset 0 0 0 1px var(--teto-frame-edge);
 }
 
 .teto-camera-stage__corner {
   position: absolute;
-  width: 1.75rem;
-  height: 1.75rem;
-  border: 2px solid rgba(126, 212, 200, 0.65);
+  width: 1.35rem;
+  height: 1.35rem;
+  border: 1.5px solid var(--teto-corner);
 }
 
 .teto-camera-stage__corner--tl {
@@ -381,7 +425,7 @@
   left: 0;
   border-right: 0;
   border-bottom: 0;
-  border-top-left-radius: 0.5rem;
+  border-top-left-radius: 0.4rem;
 }
 
 .teto-camera-stage__corner--tr {
@@ -389,7 +433,7 @@
   right: 0;
   border-left: 0;
   border-bottom: 0;
-  border-top-right-radius: 0.5rem;
+  border-top-right-radius: 0.4rem;
 }
 
 .teto-camera-stage__corner--bl {
@@ -397,7 +441,7 @@
   left: 0;
   border-right: 0;
   border-top: 0;
-  border-bottom-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.4rem;
 }
 
 .teto-camera-stage__corner--br {
@@ -405,7 +449,7 @@
   right: 0;
   border-left: 0;
   border-top: 0;
-  border-bottom-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.4rem;
 }
 
 /* Avatar stage */
@@ -413,17 +457,13 @@
 .teto-avatar-stage__silhouette {
   position: absolute;
   left: 50%;
-  bottom: 8%;
-  width: min(42%, 14rem);
+  bottom: 12%;
+  width: min(36%, 12rem);
   aspect-ratio: 3 / 5;
   transform: translateX(-50%);
   border-radius: 48% 48% 36% 36%;
-  background:
-    radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.35) 0 12%, transparent 13%),
-    linear-gradient(180deg, rgba(126, 212, 200, 0.45), rgba(42, 143, 150, 0.15) 55%, transparent);
-  filter: blur(0.5px);
-  opacity: 0.85;
-  box-shadow: 0 0 60px rgba(78, 196, 200, 0.2);
+  background: var(--teto-avatar-fill);
+  opacity: 0.7;
 }
 
 .teto-avatar-stage__clips {
@@ -432,7 +472,7 @@
   padding: 0;
 }
 
-/* ——— Glass readout (transcript + gloss) ——— */
+/* ——— Glass readout ——— */
 
 .teto-readout {
   position: relative;
@@ -444,26 +484,19 @@
 }
 
 .teto-glass {
-  border: 1px solid var(--teto-glass-border);
+  border: 1px solid var(--teto-separator);
   background: var(--teto-glass);
-  backdrop-filter: blur(var(--teto-blur));
-  -webkit-backdrop-filter: blur(var(--teto-blur));
-  box-shadow:
-    inset 0 1px 0 var(--teto-glass-edge),
-    0 16px 40px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(var(--teto-blur)) saturate(1.2);
+  -webkit-backdrop-filter: blur(var(--teto-blur)) saturate(1.2);
+  box-shadow: var(--teto-glass-shadow);
 }
 
 .teto-glass__highlight {
   position: absolute;
-  inset: -50% -30%;
-  background: linear-gradient(
-    110deg,
-    transparent 36%,
-    rgba(255, 255, 255, 0.16) 48%,
-    transparent 60%
-  );
-  animation: teto-glass-highlight 6s ease-in-out infinite;
+  inset: 0;
+  background: var(--teto-glass-sheen);
   pointer-events: none;
+  opacity: 0.55;
 }
 
 .teto-transcript,
@@ -471,102 +504,102 @@
   position: relative;
   z-index: 1;
   display: grid;
-  gap: 0.5rem;
+  gap: 0.45rem;
 }
 
 .teto-transcript__label,
 .teto-gloss-ticker__label {
   margin: 0;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: var(--teto-text-muted);
+  color: var(--teto-ink-tertiary);
 }
 
 .teto-transcript__text {
   margin: 0;
   font-family: var(--teto-font-display);
-  font-size: clamp(1.15rem, 2.5vw, 1.45rem);
-  font-weight: 575;
-  letter-spacing: -0.015em;
-  line-height: 1.35;
+  font-size: clamp(1.25rem, 2.4vw, 1.55rem);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.28;
+  color: var(--teto-ink);
 }
 
 .teto-transcript__empty,
 .teto-gloss-ticker__empty {
   margin: 0;
-  color: var(--teto-text-muted);
-  font-style: italic;
+  color: var(--teto-ink-tertiary);
+  font-style: normal;
 }
 
 .teto-transcript__meta {
   margin: 0;
-  font-size: 0.8rem;
-  color: var(--teto-text-muted);
+  font-size: 0.8125rem;
+  color: var(--teto-ink-tertiary);
 }
 
 .teto-gloss-ticker__rail {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  min-height: 2.25rem;
+  gap: 0.4rem;
+  min-height: 2rem;
   align-items: center;
 }
 
 .teto-gloss-token {
   display: inline-flex;
   align-items: center;
-  padding: 0.35rem 0.7rem;
-  border-radius: 0.55rem;
-  border: 1px solid rgba(126, 212, 200, 0.35);
-  background: rgba(78, 196, 200, 0.12);
-  font-family: var(--teto-font-mono);
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: var(--teto-accent-soft);
-  opacity: 0;
-  transform: translateY(0.4rem);
-  animation: teto-gloss-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  animation-delay: var(--token-delay, 0ms);
+  padding: 0.3rem 0.65rem;
+  border-radius: 980px;
+  border: 1px solid var(--teto-separator-strong);
+  background: var(--teto-token-bg);
+  font-family: var(--teto-font-text);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--teto-ink-secondary);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .teto-gloss-token {
+    animation: teto-gloss-enter 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--token-delay, 0ms);
+  }
 }
 
 .teto-gloss-token--stressed {
-  border-color: rgba(232, 160, 144, 0.45);
-  background: rgba(232, 160, 144, 0.14);
-  color: #f0c4ba;
+  border-color: color-mix(in srgb, var(--teto-accent) 28%, transparent);
+  background: var(--teto-accent-soft);
+  color: var(--teto-accent-ink);
 }
 
 .teto-gloss-token--reduced {
-  filter: saturate(0.65);
-  border-color: rgba(255, 255, 255, 0.22);
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--teto-text-muted);
+  color: var(--teto-ink-tertiary);
+  background: var(--teto-token-reduced-bg);
 }
 
 .teto-gloss-token--pause,
 .teto-gloss-token--hold {
   border-style: dashed;
-  color: var(--teto-text-muted);
+  color: var(--teto-ink-tertiary);
 }
 
-/* ——— Mode crossfade motion ——— */
+/* ——— Motion ——— */
 
 .teto-mode-crossfade {
-  animation: teto-mode-crossfade 480ms ease;
+  animation: teto-mode-crossfade 420ms ease;
 }
 
 .teto-shell[data-mode="english_to_sign"] .teto-mode-crossfade {
   animation-name: teto-mode-crossfade-alt;
 }
 
-/* ——— Keyframes (intentional motion set) ——— */
-
 @keyframes teto-mode-crossfade {
   from {
     opacity: 0;
-    transform: translateY(0.35rem);
+    transform: translateY(0.2rem);
   }
   to {
     opacity: 1;
@@ -577,7 +610,7 @@
 @keyframes teto-mode-crossfade-alt {
   from {
     opacity: 0;
-    transform: translateY(-0.35rem);
+    transform: translateY(-0.2rem);
   }
   to {
     opacity: 1;
@@ -587,24 +620,12 @@
 
 @keyframes teto-gloss-enter {
   from {
-    opacity: 0;
-    transform: translateY(0.45rem) scale(0.96);
+    opacity: 0.35;
+    transform: translateY(0.15rem);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes teto-glass-highlight {
-  0%,
-  100% {
-    transform: translateX(-18%) rotate(0.001deg);
-    opacity: 0.35;
-  }
-  50% {
-    transform: translateX(18%) rotate(0.001deg);
-    opacity: 0.7;
+    transform: translateY(0);
   }
 }
 
@@ -612,9 +633,6 @@
   .teto-mode-crossfade,
   .teto-gloss-token,
   .teto-stage,
-  .teto-mode-toggle__glow,
-  .teto-stage__specular,
-  .teto-glass__highlight,
   .teto-cta-primary {
     animation: none !important;
     transition: none !important;
@@ -631,7 +649,6 @@
 
   .teto-stage.is-active {
     opacity: 1;
-    transform: none;
   }
 }
 
@@ -644,38 +661,43 @@
   }
 
   .teto-hero {
-    max-width: 42rem;
+    max-width: 40rem;
   }
 
   .teto-readout {
-    grid-template-columns: 1.2fr 1fr;
+    grid-template-columns: 1.25fr 1fr;
     align-items: start;
-    padding: var(--teto-space-4);
+    padding: 1.75rem;
   }
 
   .teto-visual-plane {
-    min-height: clamp(22rem, 42vw, 32rem);
+    min-height: clamp(22rem, 40vw, 30rem);
   }
 }
 
 @media (min-width: 1100px) {
   .teto-shell__content {
-    grid-template-columns: minmax(18rem, 0.9fr) minmax(0, 1.35fr);
+    grid-template-columns: minmax(18rem, 0.88fr) minmax(0, 1.3fr);
     grid-template-areas:
+      "toolbar toolbar"
       "hero visual"
       "readout visual";
     align-items: start;
     column-gap: var(--teto-space-5);
   }
 
+  .teto-shell__toolbar {
+    grid-area: toolbar;
+  }
+
   .teto-hero {
     grid-area: hero;
-    padding-top: var(--teto-space-3);
+    padding-top: var(--teto-space-2);
   }
 
   .teto-visual-plane {
     grid-area: visual;
-    min-height: min(70vh, 36rem);
+    min-height: min(68vh, 34rem);
     position: sticky;
     top: var(--teto-space-3);
   }
@@ -691,16 +713,45 @@
 <body>
 <main
   class="teto-shell"
+  data-theme="light"
+  data-color-scheme="light"
   data-mode="sign_to_english"
   data-stage-role="camera"
   data-using-mocks="false"
 >
   <div class="teto-shell__atmosphere" aria-hidden="true"></div>
   <div class="teto-shell__content">
+    <div class="teto-shell__toolbar">
+<div
+  class="teto-theme-toggle"
+  role="radiogroup"
+  aria-label="Appearance"
+  data-active-theme="light"
+>
+<button
+  type="button"
+  class="teto-theme-toggle__btn is-selected"
+  role="radio"
+  aria-checked="true"
+  data-theme="light"
+  data-action="set-theme"
+  id="teto-theme-light"
+>Light</button>
+<button
+  type="button"
+  class="teto-theme-toggle__btn"
+  role="radio"
+  aria-checked="false"
+  data-theme="dark"
+  data-action="set-theme"
+  id="teto-theme-dark"
+>Dark</button>
+</div>
+    </div>
     <header class="teto-hero">
       <p class="teto-brand">Teto</p>
       <h1 class="teto-hero__headline teto-mode-crossfade">Speak with your hands.</h1>
-      <p class="teto-hero__supporting teto-mode-crossfade">Point the camera at your signing — Teto turns ASL into clear English.</p>
+      <p class="teto-hero__supporting teto-mode-crossfade">Hold a sign to the camera. Teto turns it into clear English.</p>
       <div class="teto-hero__cta">
 <div
   class="teto-mode-toggle"
@@ -708,9 +759,6 @@
   aria-label="Translation direction"
   data-active-mode="sign_to_english"
 >
-  <div class="teto-mode-toggle__track" aria-hidden="true">
-    <span class="teto-mode-toggle__glow"></span>
-  </div>
 <button
   type="button"
   class="teto-mode-toggle__btn is-selected"
@@ -833,12 +881,38 @@ Start signing
     <p class="teto-mode visually-hidden">Sign → English</p>
   </div>
 </main>
-  <!-- Demo meta (pipeline snapshot) -->
-  <aside class="teto-demo-meta" hidden
-    data-signs="HELLO · YOU · THANKS"
-    data-english="Hello you thanks."
-    data-gloss="HELLO YOU THANKS"
-    data-clips="clip.HELLO, clip.YOU, clip.UNKNOWN"
-  ></aside>
+<script>(function () {
+  var root = document.querySelector(".teto-shell");
+  if (!root) return;
+  var key = "teto-theme";
+  function apply(theme) {
+    root.setAttribute("data-theme", theme);
+    root.setAttribute("data-color-scheme", theme);
+    try { localStorage.setItem(key, theme); } catch (e) {}
+    document.documentElement.style.colorScheme = theme;
+    document.querySelectorAll(".teto-theme-toggle__btn").forEach(function (btn) {
+      var selected = btn.getAttribute("data-theme") === theme;
+      btn.classList.toggle("is-selected", selected);
+      btn.setAttribute("aria-checked", selected ? "true" : "false");
+    });
+    var group = document.querySelector(".teto-theme-toggle");
+    if (group) group.setAttribute("data-active-theme", theme);
+  }
+  var stored = null;
+  try { stored = localStorage.getItem(key); } catch (e) {}
+  var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  var initial = stored === "light" || stored === "dark"
+    ? stored
+    : (prefersDark ? "dark" : (root.getAttribute("data-theme") || "light"));
+  apply(initial);
+  document.addEventListener("click", function (event) {
+    var target = event.target;
+    if (!(target instanceof Element)) return;
+    var btn = target.closest("[data-action='set-theme']");
+    if (!btn) return;
+    var theme = btn.getAttribute("data-theme");
+    if (theme === "light" || theme === "dark") apply(theme);
+  });
+})();</script>
 </body>
 </html>

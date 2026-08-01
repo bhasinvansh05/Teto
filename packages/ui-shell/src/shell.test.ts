@@ -15,10 +15,16 @@ import {
   toggleMode,
 } from "./mode.js";
 import {
+  resolvePreferredTheme,
+  themeLabel,
+  toggleTheme,
+} from "./theme.js";
+import {
   renderAvatarStage,
   renderCameraStage,
   renderGlossTicker,
   renderModeToggle,
+  renderThemeToggle,
   renderTranscriptPanel,
 } from "./components/index.js";
 import {
@@ -84,6 +90,20 @@ describe("@teto/ui-shell view-model", () => {
   });
 });
 
+describe("@teto/ui-shell theme", () => {
+  it("toggles light and dark", () => {
+    assert.equal(toggleTheme("light"), "dark");
+    assert.equal(toggleTheme("dark"), "light");
+    assert.equal(themeLabel("dark"), "Dark");
+  });
+
+  it("resolves preferred theme from storage then system", () => {
+    assert.equal(resolvePreferredTheme({ stored: "dark" }), "dark");
+    assert.equal(resolvePreferredTheme({ prefersDark: true }), "dark");
+    assert.equal(resolvePreferredTheme({}), "light");
+  });
+});
+
 describe("@teto/ui-shell components", () => {
   it("ModeToggle marks the active mode", () => {
     const html = renderModeToggle({ mode: "english_to_sign" });
@@ -91,6 +111,14 @@ describe("@teto/ui-shell components", () => {
     assert.match(html, /aria-checked="true"/);
     assert.match(html, /data-mode="english_to_sign"/);
     assert.match(html, /English → Sign/);
+  });
+
+  it("ThemeToggle marks the active appearance", () => {
+    const html = renderThemeToggle({ theme: "dark" });
+    assert.match(html, /data-active-theme="dark"/);
+    assert.match(html, /data-theme="dark"/);
+    assert.match(html, /data-action="set-theme"/);
+    assert.match(html, />Dark</);
   });
 
   it("TranscriptPanel renders EnglishSentence text", () => {
@@ -129,6 +157,7 @@ describe("@teto/ui-shell markup", () => {
     const html = renderShellMarkup({
       state: createShellState(),
       presentation: getModePresentation("sign_to_english"),
+      theme: "light",
       english: mockEnglishSentence,
       gloss: mockGlossSequence,
       usingMocks: true,
@@ -137,7 +166,9 @@ describe("@teto/ui-shell markup", () => {
     assert.match(html, /Hello, how are you\?/);
     assert.match(html, /HELLO HOW YOU/);
     assert.match(html, /data-mode="sign_to_english"/);
+    assert.match(html, /data-theme="light"/);
     assert.match(html, /teto-camera-stage is-active/);
+    assert.match(html, /teto-theme-toggle/);
   });
 
   it("switches dominant stage for english_to_sign", () => {
@@ -155,5 +186,14 @@ describe("@teto/ui-shell markup", () => {
     assert.match(html, /Hello, how are you\?/);
     assert.match(html, /HELLO/);
     assert.match(html, /data-using-mocks="true"/);
+  });
+
+  it("renders dark theme appearance tokens", () => {
+    const html = renderShellMarkup(
+      createShellViewModel({ mode: "sign_to_english", theme: "dark" }),
+    );
+    assert.match(html, /data-theme="dark"/);
+    assert.match(html, /data-active-theme="dark"/);
+    assert.match(html, /aria-label="Appearance"/);
   });
 });
