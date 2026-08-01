@@ -1,4 +1,8 @@
-# Demo
+# Teto CP5 demo (lean copy)
 
-Offline snapshot of the CP5 UI shell with light/dark appearance toggle.
-Open `index.html` in a browser.
+Offline shell snapshot from the integrated pipeline.
+
+- Open `index.html` locally (CSS inlined).
+- Includes Light/Dark appearance toggle.
+- Walkthrough: see `DEMO.md`.
+- Full artifacts (console log, screenshots): `/opt/cursor/artifacts/teto-demo/`
