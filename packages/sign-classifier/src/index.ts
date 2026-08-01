@@ -34,3 +34,6 @@ export {
   RING_TIP,
   PINKY_TIP,
 } from "./hand-geometry.js";
+
+/** Deterministic pose fixtures for integration / offline demos. */
+export { buildHandLandmarks, makeFrame, syntheticPoses } from "./test-fixtures.js";

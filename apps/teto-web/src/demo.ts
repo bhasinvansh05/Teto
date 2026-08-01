@@ -1,16 +1,15 @@
-import { renderShellMarkup, createShellState } from "@teto/ui-shell";
-import { runMockSignToEnglishPipeline } from "./pipeline.js";
+import { runIntegratedPipeline, runMockSignToEnglishPipeline } from "./pipeline.js";
 
-const result = await runMockSignToEnglishPipeline();
-const html = renderShellMarkup({
-  state: createShellState("sign_to_english"),
-  english: result.english,
-  gloss: result.gloss,
-});
+console.log("=== Mock pipeline ===");
+const mock = await runMockSignToEnglishPipeline();
+console.log("English:", mock.english.text);
+console.log("Gloss:", mock.gloss.tokens.map((t) => t.gloss).join(" "));
 
-console.log("Pipeline OK");
-console.log("English:", result.english.text);
-console.log("Gloss:", result.gloss.tokens.map((t) => t.gloss).join(" "));
-console.log("Clips:", result.animation.clips.map((c) => c.clipId).join(", "));
-console.log("--- markup ---");
-console.log(html);
+console.log("\n=== CP5 integrated pipeline ===");
+const live = await runIntegratedPipeline();
+console.log("Signs:", live.sequence?.signs.map((s) => s.label).join(" "));
+console.log("English:", live.english.text);
+console.log("Gloss:", live.gloss.tokens.map((t) => t.gloss).join(" "));
+console.log("Clips:", live.animation.clips.map((c) => c.clipId).join(", "));
+console.log("--- shell ---");
+console.log(live.shellHtml);

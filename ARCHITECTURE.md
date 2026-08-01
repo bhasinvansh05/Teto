@@ -285,11 +285,13 @@ Agents building against unfinished dependencies **must** consume these mocks rat
 
 Orchestrator wires pairs after each MVP — never a big-bang merge:
 
-1. **CP1:** Vision → Classifier (`LandmarkFrame` live stream)
-2. **CP2:** Classifier → Gloss (`SignSequence` → English)
-3. **CP3:** Gloss → Avatar (`GlossSequence` → `AnimationCommand`)
-4. **CP4:** UI shell ↔ real pipelines (replace mocks)
-5. **CP5:** Full bidirectional E2E suite on `main`
+| Checkpoint | Status | Notes |
+| --- | --- | --- |
+| **CP1:** Vision → Classifier | ✅ merged | `LandmarkFrame` contract live on `main` |
+| **CP2:** Classifier → Gloss | ✅ merged | `SignSequence` → `EnglishSentence` |
+| **CP3:** Gloss → Avatar | ✅ merged | `GlossSequence` → `AnimationCommand` |
+| **CP4:** UI shell | ✅ merged | Shell on mocks; accepts live payloads |
+| **CP5:** Full E2E on `main` | ✅ | `apps/teto-web` `runIntegratedPipeline()` |
 
 After each merge into `main`, Orchestrator re-runs the full test suite.
 
