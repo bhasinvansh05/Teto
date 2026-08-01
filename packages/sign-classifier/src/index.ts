@@ -3,8 +3,34 @@
  *
  * Owns: landmark → sign label model, confidence, temporal smoothing.
  * Consumes: LandmarkFrame. Outputs: SignSequence.
- *
- * Stub owned by Orchestrator. Implement on feature/sign-classifier.
  */
 
+export type {
+  SignClassifierSourceOptions,
+  SignModel,
+  SignPrediction,
+  TemporalSmootherOptions,
+} from "./types.js";
+
+export {
+  SIGN_VOCAB,
+  HeuristicSignModel,
+  createHeuristicSignModel,
+  type SignLabel,
+} from "./heuristic-model.js";
+
+export { TemporalSmoother, Debouncer } from "./temporal-smoother.js";
+
+export { createSignClassifierSource } from "./classifier-source.js";
+
 export { createMockSignSequenceSource } from "./mock-source.js";
+
+export {
+  extractHandFeatures,
+  WRIST,
+  THUMB_TIP,
+  INDEX_TIP,
+  MIDDLE_TIP,
+  RING_TIP,
+  PINKY_TIP,
+} from "./hand-geometry.js";
