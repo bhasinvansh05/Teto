@@ -4,8 +4,19 @@
  * Owns both directions:
  *   SignSequence → EnglishSentence
  *   EnglishInput → GlossSequence
- *
- * Stub owned by Orchestrator. Implement on feature/gloss-parser.
  */
 
 export { createMockGlossParser } from "./mock-parser.js";
+export {
+  RuleBasedGlossParser,
+  createRuleBasedGlossParser,
+} from "./rule-based-parser.js";
+export { signsToEnglish } from "./signs-to-english.js";
+export { englishToGloss, tokenizeEnglish } from "./english-to-gloss.js";
+export {
+  LEXICON,
+  lookupByGloss,
+  lookupByLemma,
+  type LexiconEntry,
+  type LexiconCategory,
+} from "./lexicon.js";
