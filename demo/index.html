@@ -1,4 +1,12 @@
-/* Teto UI shell — quiet Apple HIG materials (clarity, deference, depth) */
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teto</title>
+  <style>
+    html, body { margin: 0; min-height: 100%; background: #f5f5f7; }
+    /* Teto UI shell — quiet Apple HIG materials (clarity, deference, depth) */
 
 :root {
   /* Soft cool daylight — not flat white, not cream, not neon dark */
@@ -552,8 +560,8 @@
 
 @keyframes teto-gloss-enter {
   from {
-    opacity: 0.35;
-    transform: translateY(0.15rem);
+    opacity: 0;
+    transform: translateY(0.25rem);
   }
   to {
     opacity: 1;
@@ -634,3 +642,150 @@
     grid-template-columns: 1fr;
   }
 }
+
+  </style>
+</head>
+<body>
+<main
+  class="teto-shell"
+  data-mode="sign_to_english"
+  data-stage-role="camera"
+  data-using-mocks="false"
+>
+  <div class="teto-shell__atmosphere" aria-hidden="true"></div>
+  <div class="teto-shell__content">
+    <header class="teto-hero">
+      <p class="teto-brand">Teto</p>
+      <h1 class="teto-hero__headline teto-mode-crossfade">Speak with your hands.</h1>
+      <p class="teto-hero__supporting teto-mode-crossfade">Hold a sign to the camera. Teto turns it into clear English.</p>
+      <div class="teto-hero__cta">
+<div
+  class="teto-mode-toggle"
+  role="radiogroup"
+  aria-label="Translation direction"
+  data-active-mode="sign_to_english"
+>
+<button
+  type="button"
+  class="teto-mode-toggle__btn is-selected"
+  role="radio"
+  aria-checked="true"
+  data-mode="sign_to_english"
+  id="teto-mode-sign_to_english"
+>Sign → English</button>
+<button
+  type="button"
+  class="teto-mode-toggle__btn"
+  role="radio"
+  aria-checked="false"
+  data-mode="english_to_sign"
+  id="teto-mode-english_to_sign"
+>English → Sign</button>
+</div>
+        <button type="button" class="teto-cta-primary" data-action="primary">
+Start signing
+        </button>
+      </div>
+      <p class="teto-status" role="status">Show a sign to the camera</p>
+    </header>
+    <div class="teto-visual-plane" aria-live="polite">
+<section
+  class="teto-stage teto-camera-stage is-active"
+  aria-label="Camera capture stage"
+  data-stage="camera"
+  data-active="true"
+  data-sequence-id="seq-000001"
+  data-sign-count="3"
+>
+  <div class="teto-stage__plane" aria-hidden="true">
+    <div class="teto-camera-stage__frame">
+      <span class="teto-camera-stage__corner teto-camera-stage__corner--tl"></span>
+      <span class="teto-camera-stage__corner teto-camera-stage__corner--tr"></span>
+      <span class="teto-camera-stage__corner teto-camera-stage__corner--bl"></span>
+      <span class="teto-camera-stage__corner teto-camera-stage__corner--br"></span>
+    </div>
+    <div class="teto-stage__specular"></div>
+  </div>
+  <div class="teto-stage__caption">
+    <p class="teto-stage__eyebrow">Camera</p>
+    <p class="teto-stage__title">HELLO · YOU · THANKS</p>
+  </div>
+</section>
+<section
+  class="teto-stage teto-avatar-stage"
+  aria-label="Avatar signing stage"
+  data-stage="avatar"
+  data-active="false"
+  data-command-id="anim-g-from-seq-000001"
+  data-gloss-id="g-from-seq-000001"
+  data-clip-count="3"
+  data-duration-ms="1340"
+  data-playback-rate="1"
+>
+  <div class="teto-stage__plane" aria-hidden="true">
+    <div class="teto-avatar-stage__silhouette"></div>
+    <div class="teto-stage__specular"></div>
+  </div>
+  <div class="teto-stage__caption">
+    <p class="teto-stage__eyebrow">Avatar</p>
+    <p class="teto-stage__title">3 clips · 1340ms</p>
+  </div>
+  <ul class="teto-avatar-stage__clips visually-hidden">
+<li class="teto-avatar-stage__clip" data-clip-id="clip.HELLO" data-token-id="t0">clip.HELLO</li>
+<li class="teto-avatar-stage__clip" data-clip-id="clip.YOU" data-token-id="t1">clip.YOU</li>
+<li class="teto-avatar-stage__clip" data-clip-id="clip.UNKNOWN" data-token-id="t2">clip.UNKNOWN</li>
+  </ul>
+</section>
+    </div>
+    <div class="teto-readout teto-glass">
+      <div class="teto-glass__highlight" aria-hidden="true"></div>
+<section
+  class="teto-transcript"
+  aria-live="polite"
+  data-has-text="true"
+  data-sentence-id="s-seq-000001"
+>
+  <h2 class="teto-transcript__label">English</h2>
+<p class="teto-transcript__text">Hello you thanks.</p>
+<p class="teto-transcript__meta">Confidence 81%</p>
+</section>
+<section
+  class="teto-gloss-ticker"
+  aria-label="ASL gloss sequence"
+  data-token-count="3"
+  data-gloss-id="g-from-seq-000001"
+>
+  <h2 class="teto-gloss-ticker__label">Gloss</h2>
+  <div class="teto-gloss-ticker__rail" role="list">
+<span
+  class="teto-gloss-token teto-gloss-token--sign teto-gloss-token--normal"
+  role="listitem"
+  data-token-id="t0"
+  data-fingerspell="false"
+  style="--token-delay: 0ms"
+>HELLO</span>
+<span
+  class="teto-gloss-token teto-gloss-token--sign teto-gloss-token--normal"
+  role="listitem"
+  data-token-id="t1"
+  data-fingerspell="false"
+  style="--token-delay: 70ms"
+>YOU</span>
+<span
+  class="teto-gloss-token teto-gloss-token--sign teto-gloss-token--normal"
+  role="listitem"
+  data-token-id="t2"
+  data-fingerspell="false"
+  style="--token-delay: 140ms"
+>THANKS</span>
+  </div>
+</section>
+    </div>
+    <!-- Legacy hooks for existing fixture assertions -->
+    <section class="teto-english visually-hidden">Hello you thanks.</section>
+    <section class="teto-gloss visually-hidden">HELLO YOU THANKS</section>
+    <p class="teto-mode visually-hidden">Sign → English</p>
+  </div>
+</main>
+</body>
+</html>

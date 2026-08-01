@@ -35,9 +35,6 @@ export function renderModeToggle(props: ModeToggleProps): string {
     `  aria-label="Translation direction"`,
     `  data-active-mode="${props.mode}"`,
     `>`,
-    `  <div class="teto-mode-toggle__track" aria-hidden="true">`,
-    `    <span class="teto-mode-toggle__glow"></span>`,
-    `  </div>`,
     buttons,
     `</div>`,
   ].join("\n");
