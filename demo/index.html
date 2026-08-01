@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teto — CP5 Integrated Pipeline Demo</title>
+  <style>
+    /* Reset for offline demo page */
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: #071018;
+    }
+/* Teto UI shell — Liquid Glass / Apple HIG visual system (Agent 5) */
+
+:root {
+  /* Atmosphere — deep slate ocean, not purple-on-white */
+  --teto-bg-0: #071018;
+  --teto-bg-1: #0f2433;
+  --teto-bg-2: #16374a;
+  --teto-mist: rgba(120, 200, 220, 0.18);
+  --teto-mist-warm: rgba(90, 160, 140, 0.12);
+
+  /* Glass */
+  --teto-glass: rgba(255, 255, 255, 0.07);
+  --teto-glass-strong: rgba(255, 255, 255, 0.12);
+  --teto-glass-border: rgba(255, 255, 255, 0.18);
+  --teto-glass-edge: rgba(255, 255, 255, 0.35);
+  --teto-blur: 28px;
+
+  /* Text & accent */
+  --teto-text: #f2f7fa;
+  --teto-text-muted: rgba(242, 247, 250, 0.68);
+  --teto-accent: #4ec4c8;
+  --teto-accent-soft: #7ed4c8;
+  --teto-accent-deep: #2a8f96;
+  --teto-danger-soft: #e8a090;
+
+  /* Type — SF Pro with expressive fallbacks (not Inter/Roboto/Arial/system-only) */
+  --teto-font-display: "SF Pro Display", "Avenir Next", "Nunito Sans", "Segoe UI", sans-serif;
+  --teto-font-text: "SF Pro Text", "Avenir Next", "Nunito Sans", "Segoe UI", sans-serif;
+  --teto-font-mono: "SF Mono", "Avenir Next Condensed", "Nunito Sans", monospace;
+
+  /* Layout */
+  --teto-space-1: 0.5rem;
+  --teto-space-2: 1rem;
+  --teto-space-3: 1.5rem;
+  --teto-space-4: 2.5rem;
+  --teto-space-5: 4rem;
+  --teto-radius: 1.25rem;
+  --teto-radius-sm: 0.75rem;
+  --teto-max: 72rem;
+  --teto-bp-md: 768px;
+  --teto-bp-lg: 1100px;
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ——— Shell atmosphere ——— */
+
+.teto-shell {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100dvh;
+  color: var(--teto-text);
+  font-family: var(--teto-font-text);
+  font-size: 1rem;
+  line-height: 1.5;
+  overflow-x: hidden;
+  background: var(--teto-bg-0);
+}
+
+.teto-shell__atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 90% 55% at 15% -5%, var(--teto-mist) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 50% at 90% 10%, var(--teto-mist-warm) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(46, 120, 140, 0.22) 0%, transparent 60%),
+    linear-gradient(165deg, var(--teto-bg-0) 0%, var(--teto-bg-1) 48%, var(--teto-bg-2) 100%);
+}
+
+.teto-shell__atmosphere::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 20%, transparent 75%);
+  opacity: 0.5;
+}
+
+.teto-shell__content {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, var(--teto-max));
+  margin-inline: auto;
+  padding-block: var(--teto-space-4) var(--teto-space-5);
+  display: grid;
+  gap: var(--teto-space-4);
+}
+
+/* ——— Hero: brand + headline + support + CTA ——— */
+
+.teto-hero {
+  display: grid;
+  gap: var(--teto-space-2);
+  max-width: 38rem;
+  padding-top: var(--teto-space-2);
+}
+
+.teto-brand {
+  margin: 0;
+  font-family: var(--teto-font-display);
+  font-weight: 700;
+  font-size: clamp(3rem, 10vw, 5.5rem);
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+  background: linear-gradient(
+    125deg,
+    #ffffff 10%,
+    var(--teto-accent-soft) 45%,
+    var(--teto-accent) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 8px 24px rgba(78, 196, 200, 0.25));
+}
+
+.teto-hero__headline {
+  margin: 0;
+  font-family: var(--teto-font-display);
+  font-weight: 600;
+  font-size: clamp(1.35rem, 3.2vw, 1.85rem);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--teto-text);
+}
+
+.teto-hero__supporting {
+  margin: 0;
+  max-width: 32rem;
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
+  color: var(--teto-text-muted);
+}
+
+.teto-hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--teto-space-2);
+  margin-top: var(--teto-space-1);
+}
+
+.teto-status {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--teto-text-muted);
+}
+
+.teto-cta-primary {
+  appearance: none;
+  border: 1px solid var(--teto-glass-border);
+  border-radius: 999px;
+  padding: 0.7rem 1.35rem;
+  font-family: var(--teto-font-text);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--teto-bg-0);
+  background: linear-gradient(135deg, var(--teto-accent-soft), var(--teto-accent));
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+  box-shadow: 0 10px 28px rgba(46, 143, 150, 0.35);
+}
+
+.teto-cta-primary:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+.teto-cta-primary:active {
+  transform: translateY(0);
+}
+
+.teto-cta-primary:focus-visible {
+  outline: 2px solid var(--teto-accent);
+  outline-offset: 3px;
+}
+
+/* ——— Mode toggle ——— */
+
+.teto-mode-toggle {
+  position: relative;
+  display: inline-grid;
+  grid-auto-flow: column;
+  gap: 0.25rem;
+  padding: 0.3rem;
+  border-radius: 999px;
+  border: 1px solid var(--teto-glass-border);
+  background: var(--teto-glass);
+  backdrop-filter: blur(var(--teto-blur));
+  -webkit-backdrop-filter: blur(var(--teto-blur));
+}
+
+.teto-mode-toggle__track {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.teto-mode-toggle__glow {
+  position: absolute;
+  inset: -40% -20%;
+  background: linear-gradient(
+    110deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.22) 48%,
+    transparent 62%
+  );
+  animation: teto-glass-highlight 4.5s ease-in-out infinite;
+}
+
+.teto-mode-toggle__btn {
+  position: relative;
+  z-index: 1;
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.55rem 0.95rem;
+  font-family: var(--teto-font-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--teto-text-muted);
+  background: transparent;
+  cursor: pointer;
+  transition: color 200ms ease, background 200ms ease, transform 200ms ease;
+}
+
+.teto-mode-toggle__btn.is-selected {
+  color: var(--teto-text);
+  background: var(--teto-glass-strong);
+  box-shadow: inset 0 1px 0 var(--teto-glass-edge);
+}
+
+.teto-mode-toggle__btn:focus-visible {
+  outline: 2px solid var(--teto-accent);
+  outline-offset: 2px;
+}
+
+/* ——— Dominant visual plane (camera / avatar) ——— */
+
+.teto-visual-plane {
+  position: relative;
+  width: 100%;
+  min-height: clamp(18rem, 48vw, 28rem);
+  border-radius: calc(var(--teto-radius) + 0.25rem);
+  overflow: hidden;
+  border: 1px solid var(--teto-glass-border);
+  background: rgba(8, 20, 28, 0.55);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 var(--teto-glass-edge);
+}
+
+.teto-stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: end;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.02);
+  transition:
+    opacity 420ms ease,
+    transform 420ms ease,
+    visibility 0s linear 420ms;
+  pointer-events: none;
+}
+
+.teto-stage.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  transition:
+    opacity 420ms ease,
+    transform 420ms ease,
+    visibility 0s;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.teto-stage__plane {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.teto-stage__specular {
+  position: absolute;
+  inset: -30% -40%;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.14) 48%,
+    transparent 58%
+  );
+  animation: teto-glass-highlight 5.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.teto-stage__caption {
+  position: relative;
+  z-index: 2;
+  padding: var(--teto-space-3);
+  background: linear-gradient(transparent, rgba(5, 12, 18, 0.72));
+}
+
+.teto-stage__eyebrow {
+  margin: 0 0 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--teto-accent-soft);
+}
+
+.teto-stage__title {
+  margin: 0;
+  font-family: var(--teto-font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+/* Camera stage */
+
+.teto-camera-stage__frame {
+  position: absolute;
+  inset: 12%;
+  border-radius: var(--teto-radius-sm);
+  background:
+    radial-gradient(circle at 50% 40%, rgba(78, 196, 200, 0.12), transparent 55%),
+    linear-gradient(160deg, rgba(20, 45, 58, 0.9), rgba(8, 18, 26, 0.95));
+}
+
+.teto-camera-stage__corner {
+  position: absolute;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 2px solid rgba(126, 212, 200, 0.65);
+}
+
+.teto-camera-stage__corner--tl {
+  top: 0;
+  left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-top-left-radius: 0.5rem;
+}
+
+.teto-camera-stage__corner--tr {
+  top: 0;
+  right: 0;
+  border-left: 0;
+  border-bottom: 0;
+  border-top-right-radius: 0.5rem;
+}
+
+.teto-camera-stage__corner--bl {
+  bottom: 0;
+  left: 0;
+  border-right: 0;
+  border-top: 0;
+  border-bottom-left-radius: 0.5rem;
+}
+
+.teto-camera-stage__corner--br {
+  bottom: 0;
+  right: 0;
+  border-left: 0;
+  border-top: 0;
+  border-bottom-right-radius: 0.5rem;
+}
+
+/* Avatar stage */
+
+.teto-avatar-stage__silhouette {
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  width: min(42%, 14rem);
+  aspect-ratio: 3 / 5;
+  transform: translateX(-50%);
+  border-radius: 48% 48% 36% 36%;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.35) 0 12%, transparent 13%),
+    linear-gradient(180deg, rgba(126, 212, 200, 0.45), rgba(42, 143, 150, 0.15) 55%, transparent);
+  filter: blur(0.5px);
+  opacity: 0.85;
+  box-shadow: 0 0 60px rgba(78, 196, 200, 0.2);
+}
+
+.teto-avatar-stage__clips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ——— Glass readout (transcript + gloss) ——— */
+
+.teto-readout {
+  position: relative;
+  display: grid;
+  gap: var(--teto-space-3);
+  padding: var(--teto-space-3);
+  border-radius: var(--teto-radius);
+  overflow: hidden;
+}
+
+.teto-glass {
+  border: 1px solid var(--teto-glass-border);
+  background: var(--teto-glass);
+  backdrop-filter: blur(var(--teto-blur));
+  -webkit-backdrop-filter: blur(var(--teto-blur));
+  box-shadow:
+    inset 0 1px 0 var(--teto-glass-edge),
+    0 16px 40px rgba(0, 0, 0, 0.22);
+}
+
+.teto-glass__highlight {
+  position: absolute;
+  inset: -50% -30%;
+  background: linear-gradient(
+    110deg,
+    transparent 36%,
+    rgba(255, 255, 255, 0.16) 48%,
+    transparent 60%
+  );
+  animation: teto-glass-highlight 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.teto-transcript,
+.teto-gloss-ticker {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.teto-transcript__label,
+.teto-gloss-ticker__label {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--teto-text-muted);
+}
+
+.teto-transcript__text {
+  margin: 0;
+  font-family: var(--teto-font-display);
+  font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+  font-weight: 575;
+  letter-spacing: -0.015em;
+  line-height: 1.35;
+}
+
+.teto-transcript__empty,
+.teto-gloss-ticker__empty {
+  margin: 0;
+  color: var(--teto-text-muted);
+  font-style: italic;
+}
+
+.teto-transcript__meta {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--teto-text-muted);
+}
+
+.teto-gloss-ticker__rail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  min-height: 2.25rem;
+  align-items: center;
+}
+
+.teto-gloss-token {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.7rem;
+  border-radius: 0.55rem;
+  border: 1px solid rgba(126, 212, 200, 0.35);
+  background: rgba(78, 196, 200, 0.12);
+  font-family: var(--teto-font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--teto-accent-soft);
+  opacity: 0;
+  transform: translateY(0.4rem);
+  animation: teto-gloss-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--token-delay, 0ms);
+}
+
+.teto-gloss-token--stressed {
+  border-color: rgba(232, 160, 144, 0.45);
+  background: rgba(232, 160, 144, 0.14);
+  color: #f0c4ba;
+}
+
+.teto-gloss-token--reduced {
+  filter: saturate(0.65);
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--teto-text-muted);
+}
+
+.teto-gloss-token--pause,
+.teto-gloss-token--hold {
+  border-style: dashed;
+  color: var(--teto-text-muted);
+}
+
+/* ——— Mode crossfade motion ——— */
+
+.teto-mode-crossfade {
+  animation: teto-mode-crossfade 480ms ease;
+}
+
+.teto-shell[data-mode="english_to_sign"] .teto-mode-crossfade {
+  animation-name: teto-mode-crossfade-alt;
+}
+
+/* ——— Keyframes (intentional motion set) ——— */
+
+@keyframes teto-mode-crossfade {
+  from {
+    opacity: 0;
+    transform: translateY(0.35rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes teto-mode-crossfade-alt {
+  from {
+    opacity: 0;
+    transform: translateY(-0.35rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes teto-gloss-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.45rem) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes teto-glass-highlight {
+  0%,
+  100% {
+    transform: translateX(-18%) rotate(0.001deg);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translateX(18%) rotate(0.001deg);
+    opacity: 0.7;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teto-mode-crossfade,
+  .teto-gloss-token,
+  .teto-stage,
+  .teto-mode-toggle__glow,
+  .teto-stage__specular,
+  .teto-glass__highlight,
+  .teto-cta-primary {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .teto-gloss-token {
+    opacity: 1;
+    transform: none;
+  }
+
+  .teto-stage {
+    opacity: 0;
+  }
+
+  .teto-stage.is-active {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ——— Responsive ——— */
+
+@media (min-width: 768px) {
+  .teto-shell__content {
+    padding-block: var(--teto-space-5);
+    gap: var(--teto-space-5);
+  }
+
+  .teto-hero {
+    max-width: 42rem;
+  }
+
+  .teto-readout {
+    grid-template-columns: 1.2fr 1fr;
+    align-items: start;
+    padding: var(--teto-space-4);
+  }
+
+  .teto-visual-plane {
+    min-height: clamp(22rem, 42vw, 32rem);
+  }
+}
+
+@media (min-width: 1100px) {
+  .teto-shell__content {
+    grid-template-columns: minmax(18rem, 0.9fr) minmax(0, 1.35fr);
+    grid-template-areas:
+      "hero visual"
+      "readout visual";
+    align-items: start;
+    column-gap: var(--teto-space-5);
+  }
+
+  .teto-hero {
+    grid-area: hero;
+    padding-top: var(--teto-space-3);
+  }
+
+  .teto-visual-plane {
+    grid-area: visual;
+    min-height: min(70vh, 36rem);
+    position: sticky;
+    top: var(--teto-space-3);
+  }
+
+  .teto-readout {
+    grid-area: readout;
+    grid-template-columns: 1fr;
+  }
+}
+
+  </style>
+</head>
+<body>
+<main
+  class="teto-shell"
+  data-mode="sign_to_english"
+  data-stage-role="camera"
+  data-using-mocks="false"
+>
+  <div class="teto-shell__atmosphere" aria-hidden="true"></div>
+  <div class="teto-shell__content">
+    <header class="teto-hero">
+      <p class="teto-brand">Teto</p>
+      <h1 class="teto-hero__headline teto-mode-crossfade">Speak with your hands.</h1>
+      <p class="teto-hero__supporting teto-mode-crossfade">Point the camera at your signing — Teto turns ASL into clear English.</p>
+      <div class="teto-hero__cta">
+<div
+  class="teto-mode-toggle"
+  role="radiogroup"
+  aria-label="Translation direction"
+  data-active-mode="sign_to_english"
+>
+  <div class="teto-mode-toggle__track" aria-hidden="true">
+    <span class="teto-mode-toggle__glow"></span>
+  </div>
+<button
+  type="button"
+  class="teto-mode-toggle__btn is-selected"
+  role="radio"
+  aria-checked="true"
+  data-mode="sign_to_english"
+  id="teto-mode-sign_to_english"
+>Sign → English</button>
+<button
+  type="button"
+  class="teto-mode-toggle__btn"
+  role="radio"
+  aria-checked="false"
+  data-mode="english_to_sign"
+  id="teto-mode-english_to_sign"
+>English → Sign</button>
+</div>
+        <button type="button" class="teto-cta-primary" data-action="primary">
+Start signing
+        </button>
+      </div>
+      <p class="teto-status" role="status">Show a sign to the camera</p>
+    </header>
+    <div class="teto-visual-plane" aria-live="polite">
+<section
+  class="teto-stage teto-camera-stage is-active"
+  aria-label="Camera capture stage"
+  data-stage="camera"
+  data-active="true"
+  data-sequence-id="seq-000001"
+  data-sign-count="3"
+>
+  <div class="teto-stage__plane" aria-hidden="true">
+    <div class="teto-camera-stage__frame">
+      <span class="teto-camera-stage__corner teto-camera-stage__corner--tl"></span>
+      <span class="teto-camera-stage__corner teto-camera-stage__corner--tr"></span>
+      <span class="teto-camera-stage__corner teto-camera-stage__corner--bl"></span>
+      <span class="teto-camera-stage__corner teto-camera-stage__corner--br"></span>
+    </div>
+    <div class="teto-stage__specular"></div>
+  </div>
+  <div class="teto-stage__caption">
+    <p class="teto-stage__eyebrow">Camera</p>
+    <p class="teto-stage__title">HELLO · YOU · THANKS</p>
+  </div>
+</section>
+<section
+  class="teto-stage teto-avatar-stage"
+  aria-label="Avatar signing stage"
+  data-stage="avatar"
+  data-active="false"
+  data-command-id="anim-g-from-seq-000001"
+  data-gloss-id="g-from-seq-000001"
+  data-clip-count="3"
+  data-duration-ms="1340"
+  data-playback-rate="1"
+>
+  <div class="teto-stage__plane" aria-hidden="true">
+    <div class="teto-avatar-stage__silhouette"></div>
+    <div class="teto-stage__specular"></div>
+  </div>
+  <div class="teto-stage__caption">
+    <p class="teto-stage__eyebrow">Avatar</p>
+    <p class="teto-stage__title">3 clips · 1340ms</p>
+  </div>
+  <ul class="teto-avatar-stage__clips visually-hidden">
+<li class="teto-avatar-stage__clip" data-clip-id="clip.HELLO" data-token-id="t0">clip.HELLO</li>
+<li class="teto-avatar-stage__clip" data-clip-id="clip.YOU" data-token-id="t1">clip.YOU</li>
+<li class="teto-avatar-stage__clip" data-clip-id="clip.UNKNOWN" data-token-id="t2">clip.UNKNOWN</li>
+  </ul>
+</section>
+    </div>
+    <div class="teto-readout teto-glass">
+      <div class="teto-glass__highlight" aria-hidden="true"></div>
+<section
+  class="teto-transcript"
+  aria-live="polite"
+  data-has-text="true"
+  data-sentence-id="s-seq-000001"
+>
+  <h2 class="teto-transcript__label">English</h2>
+<p class="teto-transcript__text">Hello you thanks.</p>
+<p class="teto-transcript__meta">Confidence 81%</p>
+</section>
+<section
+  class="teto-gloss-ticker"
+  aria-label="ASL gloss sequence"
+  data-token-count="3"
+  data-gloss-id="g-from-seq-000001"
+>
+  <h2 class="teto-gloss-ticker__label">Gloss</h2>
+  <div class="teto-gloss-ticker__rail" role="list">
+<span
+  class="teto-gloss-token teto-gloss-token--sign teto-gloss-token--normal"
+  role="listitem"
+  data-token-id="t0"
+  data-fingerspell="false"
+  style="--token-delay: 0ms"
+>HELLO</span>
+<span
+  class="teto-gloss-token teto-gloss-token--sign teto-gloss-token--normal"
+  role="listitem"
+  data-token-id="t1"
+  data-fingerspell="false"
+  style="--token-delay: 70ms"
+>YOU</span>
+<span
+  class="teto-gloss-token teto-gloss-token--sign teto-gloss-token--normal"
+  role="listitem"
+  data-token-id="t2"
+  data-fingerspell="false"
+  style="--token-delay: 140ms"
+>THANKS</span>
+  </div>
+</section>
+    </div>
+    <!-- Legacy hooks for existing fixture assertions -->
+    <section class="teto-english visually-hidden">Hello you thanks.</section>
+    <section class="teto-gloss visually-hidden">HELLO YOU THANKS</section>
+    <p class="teto-mode visually-hidden">Sign → English</p>
+  </div>
+</main>
+  <!-- Demo meta (pipeline snapshot) -->
+  <aside class="teto-demo-meta" hidden
+    data-signs="HELLO · YOU · THANKS"
+    data-english="Hello you thanks."
+    data-gloss="HELLO YOU THANKS"
+    data-clips="clip.HELLO, clip.YOU, clip.UNKNOWN"
+  ></aside>
+</body>
+</html>
